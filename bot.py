@@ -2,9 +2,10 @@ from slackbot.bot import Bot
 
 def main():
 	bot = Bot()
+
+	print("Start Slack Bot..!")
 	bot.run()
 
-	gitbut()
 
 if __name__ == "__main__":
 	main()
