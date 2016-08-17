@@ -12,7 +12,9 @@ def hi(message):
 	# react with thumb up emoji
 	message.react('+1')
 
-@listen_to(r'키노')
+@respond_to(r'Kino 뜻')
 def help(message):
 	# Message is sent on the channel
-	message.send('저를 찾으셨나요?')
+	message.send('Kino는 하와이어로 신체를 뜻해요. 제가 여러분 대신 몸으로 뛰겠다는 뜻이죠!')
+
+
