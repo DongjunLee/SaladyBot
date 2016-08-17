@@ -3,12 +3,11 @@
 class SaladyMenu(object):
 	
 	def __init__(self):
+		self.saladys = self.__salady_meus()
 		self.main_toppings = self.__main_topping()
 		self.sub_toppings = self.__sub_topping()
 		self.dressings = self.__dressings()
-		self.en2ko_translator = self.__translator()
-		self.ko2en_translator = dict((v,k) for k,v in self.en2ko_translator.items())
-
+		
 	def show_main_toppings(self):
 		menu_str = "| "
 		item_index = 0
@@ -61,7 +60,7 @@ class SaladyMenu(object):
 			'tofu':800,
 			'bacon':800,
 			'ground beef':1000,
-			'samon':2000,
+			'salmon':2000,
 			'fruit cheese':1300,
 			'green grapes':1200,
 		}
@@ -95,50 +94,7 @@ class SaladyMenu(object):
 		}
 		return dressings
 
-	def lang_en2ko(self, item):
-		if item in self.en2ko_translator:
-			return self.en2ko_translator[item]
-		return item
-	
-	def lang_ko2en(self, item):
-		if item in self.ko2en_translator:
-			return self.ko2en_translator[item]
-		return item	
-			
-	def __translator(self):
-		translate = {
-			'chicken':u'치킨',
-			'sweet potato':u'스윗포테이토',
-			'egg':u'에그',
-			'tofu':u'두부',
-			'bacon':u'베이컨',
-			'ground beef':u'그라운드 비프',
-			'samon':u'연어',
-			'fruit cheese':u'과일치즈',
-			'green grapes':u'청포도',
-			'cranberry':u'크랜베리',
-			'kidney bean':u'강낭콩',
-			'corn':u'옥수수',
-			'tortilla chip':u'또띠아칩',
-			'baked bean':u'베이키드빈',
-			'onion':u'양파',
-			'shredded cheese':u'쉬레드치즈',
-			'nuts':u'견과류',
-			'tomato':u'토마토',
-			'olve':u'올리브',
-			'caesar': u'시저',
-			'honey mustard': u"허니머스터드",
-			'oriental': u"오리엔탈",
-			'creamy chilly': u"크리미칠리",
-			'lemon': u"레몬",
-			'balsamic': u"발사믹",
-			'citron': u"유자",
-			'basil pesto': u"바질페스토",
-			'size_up': u"사이즈업"
-		}
-		return translate
-	
-	def item_2_category(self, item):
+		def item_2_category(self, item):
 		if item in self.main_toppings:
 			return "main"
 		elif item in self.sub_toppings:
@@ -149,3 +105,77 @@ class SaladyMenu(object):
 			return "size_up"
 		else:
 			return "not exist"
+
+	def __salady_meus(self):
+		pass
+
+	def chicken_salady(self):
+		main = ['chicken']
+		sub = ['cranberry']
+		dressing = "caesar"
+		price = 5400
+		return main, sub, dressing, price
+	
+	def sweet_salady(self):
+		main = ['sweet potato']
+		sub = ['kidney bean']
+		dressing = "oriental"
+		price = 5400
+		return main, sub, dressing, price
+
+	def egg_salady(self):
+		main = ['egg']
+		sub = ['corn']
+		dressing = "honey mustard"
+		price = 4800
+		return main, sub, dressing, price
+
+	def tofu_salady(self):
+		main = ['tofu']
+		sub = ['tomato']
+		dressing = "oriental"
+		price = 5000
+		return main, sub, dressing, price
+
+	def mexican_salady(self):
+		main = ['ground beef', ]
+		sub = ['baked bean', 'tortilla chip', 'sour cream']
+		dressing = "creamy chilly"
+		price = 5200
+		return main, sub, dressing, price
+
+	def salmon_salady(self):
+		main = ['salmon']
+		sub = ['onion']
+		dressing = "lemon"
+		price = 6200
+		return main, sub, dressing, price
+
+	def triple_cheese_salady(self):
+		main = ['fruit cheese']
+		sub = ['shredded cheese', 'parmesan cheese']
+		dressing = "balsamic"
+		price = 5800
+		return main, sub, dressing, price
+
+	def classic_salady(self):
+		main = ['green grapes', ]
+		sub = ['tomato', 'olve', 'nuts']
+		dressing = "basil pesto"
+		price = 5800
+		return main, sub, dressing, price
+
+	def my_salady(self):
+		main = []
+		sub = []
+		dressing = ""
+		price = 4100
+		return main, sub, dressing, price
+
+	def tandanji_salady(self):
+		main = ['chicken', 'sweet potato']
+		sub = ['kidney bean']
+		dressing = "oriental"
+		price = 6900
+		return main, sub, dressing, price
+
