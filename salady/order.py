@@ -1,32 +1,100 @@
 #coding: UTF-8
 
+import datetime
+import json
+import os
+
 from salady.menu import SaladyMenu
 
 class SaladyOrder(object):
 
-	def __init__(self):
-		pass
+	def __init__(self, name):
+		self.name = name
 
 	def order(self, item_list):
 		menu = SaladyMenu()
 
-		main_topping = []
-		sub_topping = []
-		dressing = []
+		main_topping_kor = []
+		main_topping_eng = []
+		sub_topping_kor = []
+		sub_topping_eng = []
+
+		dressing_kor = ""
+		dressing_eng = ""
 		size_up = False
 
-		for item in item_list:
-			item = menu.lang_ko2en(item.strip())
-			category = menu.item_2_category(item)
+		for item_kor in item_list:
+			item_eng = menu.lang_ko2en(item_kor.strip())
+			category = menu.item_2_category(item_eng)
 			if category == "main":
-				main_topping.append(item)
+				main_topping_kor.append(item_kor)
+				main_topping_eng.append(item_eng)
 			elif category == "sub":
-				sub_topping.append(item)
+				sub_topping_kor.append(item_kor)
+				sub_topping_eng.append(item_eng)
 			elif category == "dressing":
-				dressing.append(item)
+				dressing_kor = item_kor
+				dressing_eng = item_eng
 			elif category == "size_up":
 				size_up = True
+		
+		if dressing_kor != "":
+			dressing_kor = dressing_kor + "드래싱"
+		else:
+			dressing = "X"
 
-		order_preview = ("Main: " + str(main_topping) + " Sub: " + str(sub_topping) + 
-						 " dressing: " + str(dressing) + " Size Up: " + str(size_up))
-		return order_preview
+		if size_up:
+			size_up_str = "O"
+		else:
+			size_up_str = "X"
+
+		price = self.calculate_total_price(main_topping_eng, sub_topping_eng,
+											dressing_eng, size_up)
+		self.append_order_list(main_topping_eng, sub_topping_eng, dressing_eng, size_up)
+			
+		return main_topping_kor, sub_topping_kor, dressing_kor, size_up_str, price
+
+	def calculate_total_price(self, main_topping, sub_topping, dressing, size_up):
+		price = 4100 # Basic
+		menu = SaladyMenu()
+
+		for main in main_topping:
+			price += int(menu.get_price(main))
+		for sub in sub_topping:
+			price += int(menu.get_price(sub))
+		if dressing != "":
+			price += 700
+		if size_up:
+			price += 900
+		return price
+
+	def append_order_list(self, main_topping, sub_topping, dressing, size_up):
+		today = datetime.date.today()
+		fname = today.isoformat() + ".json"
+
+		name = self.name
+		order = {
+			"main_topping":main_topping,
+			"sub_topping":sub_topping,
+			"dressing":dressing,
+			"size_up":size_up
+		}
+
+		if (os.path.isfile(fname)):
+			order_dict = self.read_file(fname)
+			if name in order_dict:
+				order_dict.pop(name, None)
+			order_dict[name] = order
+		else:
+			order_dict = {}
+			order_dict[name] = order
+		self.write_file(fname, order_dict)
+
+	def read_file(self, fname):
+		with open(fname, 'r') as infile:
+			return json.loads(infile.read())
+
+	def write_file(self, fname, data):
+		with open(fname, 'w') as outfile:
+			json.dump(data, outfile)
+
