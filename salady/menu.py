@@ -1,4 +1,4 @@
-#coding: UTF-8
+# -*- coding: utf-8 -*- 
 
 class SaladyMenu(object):
 	
@@ -45,12 +45,12 @@ class SaladyMenu(object):
 			return self.sub_toppings[item]
 		elif item in self.dressings:
 			return 700
-		return 'not exist price value'
+		return 'not exist price value' + item
 
 	def get_explain(self, item):
 		if item in self.dressings:
 			return self.dressings[item]
-		return 'not exist explain value'
+		return 'not exist explain value' + item
 
 	def __main_topping(self):
 		main_toppings = {
@@ -94,7 +94,7 @@ class SaladyMenu(object):
 		}
 		return dressings
 
-		def item_2_category(self, item):
+	def item_2_category(self, item):
 		if item in self.main_toppings:
 			return "main"
 		elif item in self.sub_toppings:
@@ -106,8 +106,22 @@ class SaladyMenu(object):
 		else:
 			return "not exist"
 
+	def get_salady(self, item):
+		return self.saladys[item]
+
 	def __salady_meus(self):
-		pass
+		salady = {
+			'chicken':self.chicken_salady(),
+			'sweet':self.sweet_salady(),
+			'egg':self.egg_salady(),
+			'tofu':self.tofu_salady(),
+			'mexican':self.mexican_salady(),
+			'salmon':self.salmon_salady(),
+			'triple cheese':self.triple_cheese_salady(),
+			'classic':self.classic_salady(),
+			'my':self.my_salady()
+		}
+		return salady
 
 	def chicken_salady(self):
 		main = ['chicken']
