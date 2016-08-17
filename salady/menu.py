@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*- 
 
+from salady.translate import SaladyTranslator
+
 class SaladyMenu(object):
 	
 	def __init__(self):
@@ -7,12 +9,28 @@ class SaladyMenu(object):
 		self.main_toppings = self.__main_topping()
 		self.sub_toppings = self.__sub_topping()
 		self.dressings = self.__dressings()
+	
+	def show_saladys(self):
+		menu_str = ""
+		translator = SaladyTranslator()
+		for item in self.saladys.keys():
+			menu_str += "| " + translator.lang_en2ko(item) + " 샐러디 | "
+			main, sub, dressing, price = self.saladys[item]
+			
+			main = list(map(lambda x: translator.lang_en2ko(x), main))
+			sub = list(map(lambda x: translator.lang_en2ko(x), sub))
+			dressing = translator.lang_en2ko(dressing)		
+
+			menu_str += (", ".join(main) + ", " + ", ".join(sub) + " " + 
+						 dressing + " 드래싱  가격 : " + str(price) + "\n")
+		return menu_str
 		
 	def show_main_toppings(self):
 		menu_str = "| "
 		item_index = 0
+		translator = SaladyTranslator()
 		for item in self.main_toppings.keys():
-			menu_str += self.lang_en2ko(item) + ": " + str(self.get_price(item)) + " | "
+			menu_str += translator.lang_en2ko(item) + ": " + str(self.get_price(item)) + " | "
 			item_index += 1
 			if (item_index % 3 == 0) and (item_index % 9 != 0):
 				menu_str += "\n | "
@@ -21,8 +39,9 @@ class SaladyMenu(object):
 	def show_sub_toppings(self):
 		menu_str = "| "
 		item_index = 0
+		translator = SaladyTranslator()
 		for item in self.sub_toppings.keys():
-			menu_str += self.lang_en2ko(item) + ": " + str(self.get_price(item)) + " | "
+			menu_str += translator.lang_en2ko(item) + ": " + str(self.get_price(item)) + " | "
 			item_index += 1
 			if item_index % 4 == 0:
 				menu_str += "\n | "
@@ -31,8 +50,9 @@ class SaladyMenu(object):
 	def show_dressings(self):
 		menu_str = "| "
 		item_index = 0
+		translator = SaladyTranslator()
 		for item in self.dressings.keys():
-			menu_str += self.lang_en2ko(item) + " | "
+			menu_str += translator.lang_en2ko(item) + " | "
 			item_index += 1
 			if item_index % 3 == 0:
 				menu_str += "\n | "

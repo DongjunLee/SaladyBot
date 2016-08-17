@@ -19,8 +19,20 @@ def show_menu(message):
 
 	attachments = [
 		{
+			"fallback": "Salady Menu - Saladys",
+			"text": "<http://www.saladykorea.com/html/menu.php|Salady Menu>",				            
+			"fields": [
+				{
+					"title": "Salady",
+					"value": menu.show_saladys()
+				}
+			],
+			"color": "#2D6CB5"
+		},
+
+		{
 			"fallback": "Salady Menu - Main Toppings",
-			"text": "<http://www.saladykorea.com/html/menu_03.php|Salady Menu> - Topping & Dressing",				            
+			"text": "<http://www.saladykorea.com/html/menu_03.php|Topping & Dressing>",				            
 			"fields": [
 				{
 					"title": "Main Topping",
