@@ -1,4 +1,4 @@
-#coding: UTF-8
+# -*- coding: euc-kr -*- 
 
 class SaladyTranslator(object):
 
@@ -13,7 +13,7 @@ class SaladyTranslator(object):
 			'egg':u'에그',
 			'tofu':u'두부',
 			'bacon':u'베이컨',
-			'ground beef':u'그라운드 비프',
+			'ground beef':u'그라운드비프',
 			'salmon':u'연어',
 			'fruit cheese':u'과일치즈',
 			'green grapes':u'청포도',
@@ -38,7 +38,11 @@ class SaladyTranslator(object):
 			'black sesame': u"흑임자",
 			'sour cream': u"샤워크림",
 			'parmesan cheese': u"파마산치즈",
-			'size_up': u"사이즈업"
+			'size_up': u"사이즈업",
+			'mexican': u"맥시칸",
+			'triple cheese': u"트리플치즈",
+			'classic': u"클래식",
+			'my': u"마이"
 		}
 		return translate
 	
