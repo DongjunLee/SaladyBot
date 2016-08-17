@@ -1,4 +1,4 @@
-#coding: UTF-8
+# -*- coding: utf-8 -*- 
 
 import datetime
 import json
@@ -60,13 +60,14 @@ def order(message, items, item):
 	item_list.append(item)
 	
 	name = message.channel._client.users[message.body['user']][u'name']
-	main_topping, sub_topping, dressing, size_up, price = SaladyOrder(name).order(item_list)
-	attachments = make_order_attachment(main_topping, sub_topping,
+	salady, main_topping, sub_topping, dressing, size_up, price = SaladyOrder(name).order(item_list)
+	attachments = make_order_attachment(salady, main_topping, sub_topping,
 										dressing, size_up, price, "order")
 
 	message.send_webapi(u"주문 내역은 다음과 같습니다.", json.dumps(attachments))
 
-def make_order_attachment(main_topping, sub_topping, dressing, size_up, price, state):
+def make_order_attachment(salady, main_topping, sub_topping, 
+						  dressing, size_up, price, state):
 	if state == "order":
 		msg = "전체 주문목록에 추가되었습니다."
 	elif state == "show":
@@ -75,7 +76,18 @@ def make_order_attachment(main_topping, sub_topping, dressing, size_up, price, s
 	attachments = [
 		{
 			"fallback": "Salady Order",
-			"text": "<http://www.saladykorea.com/html/menu_01_view.php#m_salady1|마이 샐러디> - 기본 샐러드",				            
+			"text": "",				            
+			"fields": [
+				{
+					"title": salady + " 샐러디",
+					"value": ""
+				},
+			],
+			"color": "#333333"
+		},
+		{
+			"fallback": "Salady Order - Topping",
+			"text": "",				            
 			"fields": [
 				{
 					"title": "Main Topping",
@@ -146,8 +158,8 @@ def show_order_list(message):
 													dressing, size_up, price, "show")
 
 				message.send_webapi("@" + name + u" 님의 주문 내역입니다.", json.dumps(attachments))
-				total_price += price
-			total_price_msg = "총 가격은 " + str(total_price) + "원 입니다."
-			message.send(total_price_msg) 
+#				total_price += price
+#			total_price_msg = "총 가격은 " + str(total_price) + " 입니다."
+#			message.send(total_price_msg) 
 	except IOError as e:
 		message.send("주문 내역이 없습니다! 주문해주세요.")
