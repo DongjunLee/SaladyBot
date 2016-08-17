@@ -4,6 +4,8 @@ import datetime
 import json
 import os
 import re
+import schedule
+import time
 
 from slackbot.bot import respond_to
 from slackbot.bot import listen_to
@@ -80,7 +82,7 @@ def make_order_attachment(salady, main_topping, sub_topping,
 			"fields": [
 				{
 					"title": salady + " 샐러디",
-					"value": ""
+					"value": "( ): 기본 토핑"
 				},
 			],
 			"color": "#333333"
@@ -139,27 +141,59 @@ def show_order_list(message):
 
 	try:
 		with open(fname, 'r') as infile:
-			menu = SaladyMenu()
 			order_dict = json.loads(infile.read())
 			total_price = 0
+			attachments = []
+			index = 0
+			color_list = ["#2D6CB5", "DCDCDC", "#ACD039", "#E54837", "#FFFF00"]
 			for k,v in order_dict.items():
 				name = k
-				order = SaladyOrder(name)
-				price = order.calculate_total_price(v["main_topping"], v["sub_topping"], 
-													v["dressing"], v["size_up"])
-				main_topping = list(map(lambda x: menu.lang_en2ko(x), v["main_topping"]))
-				sub_topping = list(map(lambda x: menu.lang_en2ko(x), v["sub_topping"]))
-				dressing = menu.lang_en2ko(v["dressing"])
-				if v["size_up"]:
-					size_up = "O"
-				else:
-					size_up = "X"
-				attachments = make_order_attachment(main_topping, sub_topping, 
-													dressing, size_up, price, "show")
+				price = v["price"]
+				total_price += int(price)
+				summary = v["summary"]
 
-				message.send_webapi("@" + name + u" 님의 주문 내역입니다.", json.dumps(attachments))
+				order_summary = {
+					"fallback": "Salady Order",
+					"text": "",				            
+					"fields": [
+						{
+							"title": "@" + name + u" 님의 주문 내역입니다.",
+							"value": summary,
+							"short": "true"
+						}
+					],
+					"color":color_list[index%5]
+				}
+				index += 1
+				attachments.append(order_summary)
+		total_price_summary = {
+			"fallback": "Salady Order",
+			"text": "",				            
+			"fields": [
+				{
+					"title": "총 " + str(total_price) + "원 입니다.",
+					"value": ""
+				}
+			],
+			"color": "#333"
+		}
+		attachments.append(total_price_summary)
+
+		message.send_webapi("", json.dumps(attachments))
 #				total_price += price
-#			total_price_msg = "총 가격은 " + str(total_price) + " 입니다."
-#			message.send(total_price_msg) 
+#		total_price_msg = "총 가격은 " + str(total_price) + " 입니다."
+#		message.send(total_price_msg) 
 	except IOError as e:
 		message.send("주문 내역이 없습니다! 주문해주세요.")
+
+@listen_to(r'메튜')
+def ban_matt1(message):
+	message.send("Matthew 배신자..")
+
+@listen_to(r'매튜')
+def ban_matt2(message):
+	message.send("배신자 Matthew!!!")
+
+@listen_to(r'matt', re.IGNORECASE)
+def ban_matt3(message):
+	message.send("Matthew 배신자!!!")
