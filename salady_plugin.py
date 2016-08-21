@@ -198,14 +198,3 @@ def show_order_list(message):
 	except IOError as e:
 		message.send("주문 내역이 없습니다! 주문해주세요.")
 
-@listen_to(r'메튜')
-def ban_matt1(message):
-	message.send("Matthew 배신자..")
-
-@listen_to(r'매튜')
-def ban_matt2(message):
-	message.send("배신자 Matthew!!!")
-
-@listen_to(r'matt', re.IGNORECASE)
-def ban_matt3(message):
-	message.send("Matthew 배신자!!!")
